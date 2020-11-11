@@ -20,7 +20,7 @@ export class ChatService {
               public auth: AngularFireAuth
             ) { 
       this.auth.authState.subscribe( user => { 
-        console.log(user);
+        // console.log('Usuario ' + user.uid);
 
         if (!user) {
           return;
@@ -36,10 +36,11 @@ export class ChatService {
   }
   
   logout() {
+    this.usuario = {};
     this.auth.signOut();
   }
 
-  loadMessages () {
+  loadMessages() {
     this.itemsCollection = this.afs.collection<Mensaje>('chats', ref => ref.orderBy('date','desc')
                                                                            .limit(5) );
     return this.itemsCollection.valueChanges()
@@ -57,9 +58,10 @@ export class ChatService {
 
   saveMessages(textMessage:string) {
     let message:Mensaje = {
-      userName : 'Demo',
+      userName : this.usuario.nombre,
       message : textMessage,
-      date : new Date().getTime()
+      date : new Date().getTime(),
+      uid : this.usuario.id
     };
 
     return this.itemsCollection.add(message);

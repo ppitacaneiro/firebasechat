@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(provider:string) {
-    this.chatService.login();
+    this.chatService.login(provider);
   }
 
 }
